@@ -5,6 +5,9 @@
         <div class="col bg-danger">
             <h1>Input</h1>
             <p>{{ input }}</p>
+            <form action="{{ url_for('index') }}" method="GET">
+                <input type="text" class="bg-danger" name="input">
+            </form>
         </div>
         <div class="col bg-success">
             <h1>Output</h1>

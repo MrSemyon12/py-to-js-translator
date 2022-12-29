@@ -1,5 +1,6 @@
 from .rule import Rule
 
+
 class State(object):
     def __init__(self, name, production, dot_index, start_column):
         self.name = name

@@ -1,5 +1,6 @@
 from .token import Token
 
+
 class tokens:
     tokens_type = [
         "KEYWORD",  # 0   +
@@ -11,8 +12,6 @@ class tokens:
         "INTEGERNUMBER",  # 6   +!
         "REALNUMBER"  # 7   +!
     ]
-
-
 
     tokens_array: Token = []
 

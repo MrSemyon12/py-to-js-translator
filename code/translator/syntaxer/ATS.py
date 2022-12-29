@@ -1,8 +1,9 @@
 from .sintaxunit import SyntaxUnit
 from .rule import Rule
 
+
 class Node:
-    def __init__(self, left, right = [], prev = None):
+    def __init__(self, left, right=[], prev=None):
 
         self.left = left
         self.right = right
@@ -14,10 +15,13 @@ class Node:
 
     def listToTree(self, rulelist):
         i = 0
-        for t in self.right[::-1]:                                         # в обратном порядке правые потомки
-            if len(rulelist) and rulelist[0].name == str(t):               # если длина листа ненулевая и имя первого
-                                                                           # элемента равно правому потомку дерева
-                left, right = (t, rulelist[0].productions[0])              # левый потомок - элемент листа, правый - продукция нулевого элемента листа
+        # в обратном порядке правые потомки
+        for t in self.right[::-1]:
+            # если длина листа ненулевая и имя первого
+            if len(rulelist) and rulelist[0].name == str(t):
+                # элемента равно правому потомку дерева
+                # левый потомок - элемент листа, правый - продукция нулевого элемента листа
+                left, right = (t, rulelist[0].productions[0])
                 newNode = Node(left, right, self)                          #
                 self.childs.insert(0, newNode)
                 rulelist.pop(0)
@@ -66,7 +70,8 @@ class SyntacticalTree:
                     l = len(ptr.prev.left.name)
                 else:
                     l = len(ptr.prev.left)
-            file.write(str(level) + ':' + '|' + level * ' ' + '├-' + str(ptr.left)+"\n")
+            file.write(str(level) + ':' + '|' + level *
+                       ' ' + '├-' + str(ptr.left)+"\n")
             if ptr.childs:
                 for i in ptr.childs:
                     search(i, level + 1, file)

@@ -1,40 +1,37 @@
-import math
+from translator.lexer import lexicalAnalizer as la
+from translator.IOpackage import ReadWriteClass as IO
+from translator.syntaxer.syntaxanalizer import SyntaxAnalizer
+from translator.syntaxer.sintaxunit import SyntaxUnit
+from translator.syntaxer.rule import Rule
+from translator.syntaxer.grammar import Grammar
+from translator.syntaxer.ATS import SyntacticalTree
+from translator.semanticaltree.operationtree import SyntacticsStructure
+from translator.semanticaltree.semanticalanalizer import SemanticalAnalyzer
+from translator.codegenerator.codegenerator import CodeGenerator
+from translator.test.RunTests import Tester
 
-import lexer.lexicalAnalizer as la
-import IOpackage.ReadWriteClass as IO
-from syntaxer.syntaxanalizer import SyntaxAnalizer
-from syntaxer.sintaxunit import SyntaxUnit
-from syntaxer.rule import Rule
-from syntaxer.grammar import Grammar
-from syntaxer.ATS import SyntacticalTree
-from semanticaltree.operationtree import SyntacticsStructure
-from semanticaltree.semanticalanalizer import SemanticalAnalyzer
-from codegenerator.codegenerator import CodeGenerator
-from test.RunTests import Tester
-from pathlib import Path
 
-def test():
+def test(path):
     sa = SyntaxAnalizer()
-    code = IO.read()
+    code = IO.read(path)
     tokens = la.parse(code)
     print(la.lextableToString(tokens.tokens_array))
-    table = sa.earley(rule=sa.grammatic.PROGRAMM, text=la.lextableToString(tokens.tokens_array))
+    table = sa.earley(rule=sa.grammatic.PROGRAMM,
+                      text=la.lextableToString(tokens.tokens_array))
     parsed = sa.right_parsing(table)
     tree = SyntacticalTree(parsed)
     tree.printTree()
-    IO.writeSyntaxTree(tree)
+    IO.writeSyntaxTree(tree, path)
     operationtree = SyntacticsStructure(tree)
     operationtree.printast()
-    IO.writeOperationTree(operationtree)
+    IO.writeOperationTree(operationtree, path)
     sema = SemanticalAnalyzer(operationtree)
-    translator = CodeGenerator(operationtree, sema.rootscope, sema.maxscopelevel)
+    translator = CodeGenerator(
+        operationtree, sema.rootscope, sema.maxscopelevel)
     translator.translate(operationtree.root)
     print(translator.output)
-    IO.writeCode(translator.output)
+    IO.writeCode(translator.output, path)
+
 
 if __name__ == '__main__':
     test()
-    # if "sdf" == 1:
-    #     a = 1
-    # else:
-    #     a = 2

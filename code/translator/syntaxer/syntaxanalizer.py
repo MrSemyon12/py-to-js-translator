@@ -19,7 +19,8 @@ class SyntaxAnalizer:
             return
         if state.name == self.grammatic.GAMMA_RULE:
             print("Gamma")
-        col.add(State(state.name, state.production, state.dot_index + 1, state.start_column))
+        col.add(State(state.name, state.production,
+                state.dot_index + 1, state.start_column))
 
     def complete(self, col, state):
         if not state.completed():
@@ -29,11 +30,13 @@ class SyntaxAnalizer:
             if not isinstance(term, Rule):
                 continue
             if term.name == state.name:
-                col.add(State(st.name, st.production, st.dot_index + 1, st.start_column))
+                col.add(State(st.name, st.production,
+                        st.dot_index + 1, st.start_column))
 
     def earley(self, rule, text):
         table = [Column(i, tok) for i, tok in enumerate([None] + text.split())]
-        table[0].add(State(self.grammatic.GAMMA_RULE, SyntaxUnit(rule), 0, table[0]))
+        table[0].add(State(self.grammatic.GAMMA_RULE,
+                     SyntaxUnit(rule), 0, table[0]))
 
         for i, col in enumerate(table):
             for state in col:

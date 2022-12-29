@@ -1,7 +1,8 @@
 import sys
 
-from semanticaltree.operationtree import SyntacticsStructure
-from semanticaltree.operationtree import NodeStruct
+from translator.semanticaltree.operationtree import SyntacticsStructure
+from translator.semanticaltree.operationtree import NodeStruct
+
 
 class Scope:
     def __init__(self, level, prev):
@@ -50,13 +51,6 @@ class SemanticalAnalyzer:
         self.scopes.append(self.rootscope)
         self.scan(self.root)
 
-
-
-
-
-
-
-
     def checkvar(self, varname: str, currscope: Scope):
         for var in currscope.variables:
             if var[0] == varname:
@@ -66,7 +60,7 @@ class SemanticalAnalyzer:
                 return self.checkvar(varname, currscope.prev)
         return None
 
-    def checkvarbool(self, varname:str, currscope):
+    def checkvarbool(self, varname: str, currscope):
         for var in currscope.variables:
             if var[0] == varname:
                 return True
@@ -164,15 +158,15 @@ class SemanticalAnalyzer:
                 sys.stderr.write('Unresolved variable: %s\n' % argument.value)
                 sys.exit(1)
 
-
-
     def scanexpression(self, ptr):
         if ptr.childs[1].name == "VARIABLE":
             if not self.checkvarbool(ptr.childs[1].value, self.currentscope):
-                sys.stderr.write('Unresolved variable: %s\n' % ptr.childs[1].value)
+                sys.stderr.write('Unresolved variable: %s\n' %
+                                 ptr.childs[1].value)
                 sys.exit(1)
             elif self.checkvar(ptr.childs[1].value, self.currentscope)[1] == "STRING":
-                sys.stderr.write('Expected type \'SupportsFloat\': %s\n' % ptr.childs[0].name)
+                sys.stderr.write(
+                    'Expected type \'SupportsFloat\': %s\n' % ptr.childs[0].name)
                 sys.exit(1)
             elif ptr.childs[1] == "OPERATION":
                 self.subscantypes(ptr.childs[1])
@@ -204,7 +198,8 @@ class SemanticalAnalyzer:
                         elif (var[1], var2[1]) not in self.illegalcombination:
                             operation.name = var[1]
                     else:
-                        sys.stderr.write('Unresolved variable: %s\n' % left.value)
+                        sys.stderr.write(
+                            'Unresolved variable: %s\n' % left.value)
                         sys.exit(1)
                 elif (var[1], right.name) not in self.illegalcombination:
                     operation.name = var[1]
@@ -238,4 +233,3 @@ class SemanticalAnalyzer:
                     operation.name = "FLOAT"
         elif (left.name, right.name) not in self.illegalcombination:
             operation.name = left.name
-

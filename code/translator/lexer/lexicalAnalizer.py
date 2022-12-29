@@ -1,5 +1,5 @@
-from lexer.token import Token
-from lexer.tokens import tokens
+from translator.lexer.token import Token
+from translator.lexer.tokens import tokens
 import sys
 import re
 
@@ -32,12 +32,13 @@ def parse(characters):
             pos = match.end(0)
     return tokens
 
+
 def lextableToString(lextable):
     res = ""
     counter = -1
     bracketcounter = 0
     tabscounter = 0
-    while(counter < len(lextable)-1):
+    while (counter < len(lextable)-1):
         counter += 1
         i = lextable[counter]
         if i.type == tokens.tokens_type[2] or i.type == tokens.tokens_type[5] or i.type == tokens.tokens_type[6] or i.type == tokens.tokens_type[7]:
@@ -46,11 +47,11 @@ def lextableToString(lextable):
         elif i.value == "\\n" and lextable[counter+1].value == "\\n":
             continue
         elif i.value == "\\n":
-                # and lextable[counter+1].value == "\\t"\
+            # and lextable[counter+1].value == "\\t"\
             res += ' ' + i.value
             localtabs = 0
             tmpcounter = counter
-            while(lextable[tmpcounter+1].value == "\\t"):
+            while (lextable[tmpcounter+1].value == "\\t"):
                 tmpcounter += 1
                 localtabs += 1
             else:
@@ -60,7 +61,7 @@ def lextableToString(lextable):
                     res += ' ' + "{"*(localtabs-tabscounter)
                     counter = tmpcounter
                     tabscounter = localtabs
-                    bracketcounter+=1
+                    bracketcounter += 1
                 elif localtabs < tabscounter:
                     res += ' ' + "} "*(tabscounter-localtabs)
                     counter = tmpcounter
@@ -77,9 +78,6 @@ def lextableToString(lextable):
         res += ' '+"} "*tabscounter
     res = res.replace(" \\n", "")
     return res
-
-
-
 
     # for i in lextable:
     #     counter += 1

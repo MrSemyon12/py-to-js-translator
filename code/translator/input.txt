@@ -1,1 +1,1 @@
-a=True+1<2
+if 5:\n\tprint(1)\nelse:\n\tprint(2)

@@ -1,9 +1,9 @@
 from __future__ import annotations
 # from ...lexicalanalyzer.env import Env
 # from ...lexicalanalyzer.idtable import IdTable
-from syntaxer.ATS import SyntacticalTree
-from syntaxer.ATS import Node
-from syntaxer.rule import Rule
+from translator.syntaxer.ATS import SyntacticalTree
+from translator.syntaxer.ATS import Node
+from translator.syntaxer.rule import Rule
 import copy
 
 
@@ -59,8 +59,10 @@ class NodeStruct:
 
 class SyntacticsStructure:
     def __init__(self, stree: SyntacticalTree):
-        self.uselessterms = ["(", ")", "if", "\'", "\"",":", "\\n", "while", "print"]
-        self.operations = ['+', '-', '*', '/', '>', '<', '>=', '<=', '==', '!=', 'and', 'or', '=']
+        self.uselessterms = ["(", ")", "if", "\'", "\"",
+                             ":", "\\n", "while", "print"]
+        self.operations = ['+', '-', '*', '/', '>', '<',
+                           '>=', '<=', '==', '!=', 'and', 'or', '=']
         self.unaroperations = ['not']
         self.root = self.__copytree(stree)
         self.__reformattree(self.root)
@@ -178,7 +180,7 @@ class SyntacticsStructure:
                         ("NUM", "FLOAT"),
                         ("NUM", "DIGIT"),
                         # ("EXP", "REAL_NUMBER")
-                        #("NUM", "REAL_NUMBER"),
+                        # ("NUM", "REAL_NUMBER"),
                     ]:
                         prevbuf = lastnode.prev
                         lastnode.prev.childs.remove(lastnode)
@@ -293,8 +295,6 @@ class SyntacticsStructure:
         #         else:
         #             _fixinner(lastnode)
 
-
-
         _searchid(ptr)
         _searchvars(ptr)
         _searchopers(ptr)
@@ -349,7 +349,8 @@ class SyntacticsStructure:
 
     def printastToFile(self):
         def search(ptr: NodeStruct, level, file):
-            file.write(str(level) + ':' + '|' + level * '+' + '├-' + str(ptr) + "\n")
+            file.write(str(level) + ':' + '|' + level *
+                       '+' + '├-' + str(ptr) + "\n")
             if ptr.childs:
                 for i in ptr.childs:
                     search(i, level + 1, file)
