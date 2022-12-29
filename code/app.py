@@ -15,6 +15,7 @@ def index():
     if not input:
         return render_template('index.html', input='', output='')
 
+    print(input)
     with open(r'code/translator/input.txt', 'w') as file:
         file.write(input)
 

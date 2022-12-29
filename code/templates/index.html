@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 {% block body %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col bg-danger">
-            <h1>Input</h1>
-            <p>{{ input }}</p>
-            <form action="{{ url_for('index') }}" method="GET">
-                <input type="text" class="bg-danger" name="input">
-            </form>
+<div class="container">
+    <form class="container mt-5 position-relative" action="{{ url_for('index') }}" method="GET">
+        <button class="btn position-absolute top-50 start-50 translate-middle">
+            <img class="hoverable" src="{{ url_for('static', filename='images/right-arrow.png') }}" alt="arrow"
+                width="60" height="60">
+        </button>
+
+        <div class="row pb-5">
+            <div class="col">
+                <h1 class="d-flex justify-content-center">Python</h1>
+                <textarea class="form-control fs-2" name="input" rows="8"
+                    placeholder="Write your python code here">{{ input }}</textarea>
+            </div>
+            <div class="col">
+                <h1 class="d-flex justify-content-center">JavaScript</h1>
+                <textarea class="form-control fs-2" rows="8"
+                    placeholder="Output JavaScript code">{{ output }}</textarea>
+            </div>
         </div>
-        <div class="col bg-success">
-            <h1>Output</h1>
-            <p>{{ output }}</p>
-        </div>
-    </div>
+    </form>
 </div>
 {% endblock body %}
