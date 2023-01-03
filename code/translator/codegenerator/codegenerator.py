@@ -111,7 +111,7 @@ class CodeGenerator:
         localoutput = ""
         if compound.name == "ASSIGNMENT":
             localoutput += compound.childs[0].value + " = "
-            localoutput += self.translateexpression(compound.childs[1])
+            localoutput += self.translateexpression(compound.childs[1]) + ";"
         elif compound.name == "CONDITIONAL_OPERATOR":
             level = self.currentscope.level+1
             buaty = "\t"*(level)
@@ -210,6 +210,6 @@ class CodeGenerator:
                     self.levels[i] = 0
         elif compound.name == "PRINT":
             localoutput += "console.log("
-            localoutput += self.translateexpression(compound.childs[0])+")"
+            localoutput += self.translateexpression(compound.childs[0])+");"
         localoutput += "\n"
         return localoutput

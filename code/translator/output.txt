@@ -1,5 +1,5 @@
-let a;
-a = 7
-while (a>=5) { 
-		a = a-1
+let z;
+z = True;
+if (z) { 
+		console.log(z);
 }
