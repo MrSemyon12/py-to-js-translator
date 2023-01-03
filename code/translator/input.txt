@@ -1,1 +1,3 @@
-a = 7;
+a=6
+while True and False:
+    a = a - 7

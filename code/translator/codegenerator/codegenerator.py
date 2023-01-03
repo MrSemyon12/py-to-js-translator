@@ -42,20 +42,18 @@ class CodeGenerator:
             if len(self.currentscope.variables) == 1:
                 localoutput += self.currentscope.variables[0][0]
                 localoutput += ";\n"
-                # return localoutput
             else:
                 for var in self.currentscope.variables:
                     localoutput += var[0] + ", "
                 localoutput = localoutput[:len(localoutput) - 2]
                 localoutput += ";\n"
-                # return localoutput
         return localoutput
 
     def translateexpression(self, ptr: NodeStruct):
         localoutput = ""
         if ptr.value in self.binaroperator:
             localoutput += self.translateexpression(ptr.childs[0])
-            localoutput += ptr.value
+            localoutput += f" {ptr.value} "
             localoutput += self.translateexpression(ptr.childs[1])
             localoutput = localoutput
             return localoutput
@@ -74,9 +72,6 @@ class CodeGenerator:
             localoutput += self.translateexpression(ptr.childs[1])
             localoutput += ")"
             return localoutput
-        # elif ptr.name == "FLOAT":
-        #     localoutput+=ptr.childs[0].value+ptr.childs[1].value
-        #     return localoutput
 
     def translatelogicalexpression(self, condition):
         localoutput = ""

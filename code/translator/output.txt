@@ -1,2 +1,5 @@
 let a;
-a = 7;
+a = 6;
+while (True && False) { 
+		a = a - 7;
+}
