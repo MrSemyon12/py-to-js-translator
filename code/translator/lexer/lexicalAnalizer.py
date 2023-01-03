@@ -26,6 +26,7 @@ def parse(characters):
                     mtoken.tokens_array.append(token)
                 break
         if not match:
+            raise Exception('Illegal character: %s\n' % characters[pos])
             sys.stderr.write('Illegal character: %s\n' % characters[pos])
             sys.exit(1)
         else:

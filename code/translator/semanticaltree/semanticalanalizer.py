@@ -83,6 +83,7 @@ class SemanticalAnalyzer:
                 var = self.checkvar(right.value, self.currentscope)
                 return (left.value, var[1])
             else:
+                raise Exception('Unresolved variable: %s\n' % right.value)
                 sys.stderr.write('Unresolved variable: %s\n' % right.value)
                 sys.exit(1)
 
@@ -155,16 +156,21 @@ class SemanticalAnalyzer:
             self.scanargument(argument.prev)
         elif argument.name == "VARIABLE":
             if not self.checkvarbool(argument.value, self.currentscope):
+                raise Exception('Unresolved variable: %s\n' % argument.value)
                 sys.stderr.write('Unresolved variable: %s\n' % argument.value)
                 sys.exit(1)
 
     def scanexpression(self, ptr):
         if ptr.childs[1].name == "VARIABLE":
             if not self.checkvarbool(ptr.childs[1].value, self.currentscope):
+                raise Exception('Unresolved variable: %s\n' %
+                                ptr.childs[1].value)
                 sys.stderr.write('Unresolved variable: %s\n' %
                                  ptr.childs[1].value)
                 sys.exit(1)
             elif self.checkvar(ptr.childs[1].value, self.currentscope)[1] == "STRING":
+                raise Exception(
+                    'Expected type \'SupportsFloat\': %s\n' % ptr.childs[0].name)
                 sys.stderr.write(
                     'Expected type \'SupportsFloat\': %s\n' % ptr.childs[0].name)
                 sys.exit(1)
@@ -177,6 +183,7 @@ class SemanticalAnalyzer:
         left = operation.childs[0]
         right = operation.childs[1]
         if (left.name, right.name) in self.illegalcombination:
+            raise Exception('Illegal type: %s\n' % right.name)
             sys.stderr.write('Illegal type: %s\n' % right.name)
             sys.exit(1)
         elif left.name == "OPERATOR":
@@ -187,28 +194,34 @@ class SemanticalAnalyzer:
             if self.checkvarbool(left.value, self.currentscope):
                 var = self.checkvar(left.value, self.currentscope)
                 if (var[1], right.name) in self.illegalcombination:
+                    raise Exception('Illegal type: %s\n' % right.name)
                     sys.stderr.write('Illegal type: %s\n' % right.name)
                     sys.exit(1)
                 elif right.name == "VARIABLE":
                     if self.checkvarbool(right.value, self.currentscope):
                         var2 = self.checkvar(right.value, self.currentscope)
                         if (var[1], var2[1]) in self.illegalcombination:
+                            raise Exception('Illegal type: %s\n' % var2[0])
                             sys.stderr.write('Illegal type: %s\n' % var2[0])
                             sys.exit(1)
                         elif (var[1], var2[1]) not in self.illegalcombination:
                             operation.name = var[1]
                     else:
+                        raise Exception(
+                            'Unresolved variable: %s\n' % left.value)
                         sys.stderr.write(
                             'Unresolved variable: %s\n' % left.value)
                         sys.exit(1)
                 elif (var[1], right.name) not in self.illegalcombination:
                     operation.name = var[1]
             else:
+                raise Exception('Unresolved variable: %s\n' % left.value)
                 sys.stderr.write('Unresolved variable: %s\n' % left.value)
                 sys.exit(1)
         elif left.name == "EXPRESSION":
             if self.scanexpression(left):
                 if ("FLOAT", right.name) in self.illegalcombination:
+                    raise Exception('Illegal type: %s\n' % right.name)
                     sys.stderr.write('Illegal type: %s\n' % right.name)
                     sys.exit(1)
                 else:
@@ -217,16 +230,19 @@ class SemanticalAnalyzer:
             if self.checkvarbool(right.value, self.currentscope):
                 var = self.checkvar(right.value, self.currentscope)
                 if (var[1], left.name) in self.illegalcombination:
+                    raise Exception('Illegal type: %s\n' % right.name)
                     sys.stderr.write('Illegal type: %s\n' % right.name)
                     sys.exit(1)
                 elif (var[1], left.name) not in self.illegalcombination:
                     operation.name = var[1]
             else:
+                raise Exception('Unresolved variable: %s\n' % left.value)
                 sys.stderr.write('Unresolved variable: %s\n' % left.value)
                 sys.exit(1)
         elif right.name == "EXPRESSION":
             if self.scanexpression(left):
                 if ("FLOAT", right.name) in self.illegalcombination:
+                    raise Exception('Illegal type: %s\n' % right.name)
                     sys.stderr.write('Illegal type: %s\n' % right.name)
                     sys.exit(1)
                 else:

@@ -172,4 +172,4 @@ class Grammar:
             self.COMPOUND_OPERATOR, self.N, self.PROGRAMM))
         self.PROGRAMM.add(SyntaxUnit(self.N, self.PROGRAMM))
 
-        self.GAMMA_RULE = u"GAMMA"
+        self.GRAMMA_RULE = u"GRAMMA"

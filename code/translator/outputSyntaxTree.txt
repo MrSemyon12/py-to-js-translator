@@ -1,55 +1,80 @@
-0:|├-GAMMA
-1:| ├-PROGRAMM
-2:|  ├-COMPOUND_OPERATOR
-3:|   ├-VARIABLE_DECLARATION
-4:|    ├-VARIABLE
-5:|     ├-LETTER
-6:|      ├-a
-4:|    ├-ASSIGNMENT_RELATION
-5:|     ├-=
-4:|    ├-VALUE
-5:|     ├-IDENTIFIER
-6:|      ├-INTEGER
-7:|       ├-NUM
-8:|        ├-DIGIT
-9:|         ├-NOT_NULL_DIGIT
-10:|          ├-5
-2:|  ├-PROGRAMM
-3:|   ├-COMPOUND_OPERATOR
-4:|    ├-WHILE
-5:|     ├-while
-5:|     ├-CONDITIONAL_EXPRESSION
-6:|      ├-RELATION_EXPR
-7:|       ├-VALUE
-8:|        ├-IDENTIFIER
-9:|         ├-BOOL
-10:|          ├-True
-5:|     ├-:
-5:|     ├-{
-5:|     ├-INTERNAL_OPERATOR
-6:|      ├-PROGRAMM
-7:|       ├-COMPOUND_OPERATOR
-8:|        ├-WHILE
-9:|         ├-while
-9:|         ├-CONDITIONAL_EXPRESSION
-10:|          ├-RELATION_EXPR
-11:|           ├-VALUE
-12:|            ├-IDENTIFIER
-13:|             ├-BOOL
-14:|              ├-False
-9:|         ├-:
-9:|         ├-{
-9:|         ├-INTERNAL_OPERATOR
-10:|          ├-PROGRAMM
-11:|           ├-COMPOUND_OPERATOR
-12:|            ├-PRINT
-13:|             ├-print
-13:|             ├-(
-13:|             ├-VALUE
-14:|              ├-IDENTIFIER
-15:|               ├-VARIABLE
-16:|                ├-LETTER
-17:|                 ├-a
-13:|             ├-)
-9:|         ├-}
-5:|     ├-}
+0:|>GRAMMA
+1:|->PROGRAMM
+2:|-->COMPOUND_OPERATOR
+3:|--->VARIABLE_DECLARATION
+4:|---->VARIABLE
+5:|----->LETTER
+6:|------>a
+4:|---->ASSIGNMENT_RELATION
+5:|----->=
+4:|---->VALUE
+5:|----->IDENTIFIER
+6:|------>INTEGER
+7:|------->NUM
+8:|-------->DIGIT
+9:|--------->NOT_NULL_DIGIT
+10:|---------->7
+2:|-->PROGRAMM
+3:|--->COMPOUND_OPERATOR
+4:|---->WHILE
+5:|----->while
+5:|----->CONDITIONAL_EXPRESSION
+6:|------>RELATION_EXPR
+7:|------->EXPRESSION
+8:|-------->SUMMAND
+9:|--------->MULTIPLIER
+10:|---------->RELATION_EXPR
+11:|----------->VALUE
+12:|------------>IDENTIFIER
+13:|------------->VARIABLE
+14:|-------------->LETTER
+15:|--------------->a
+7:|------->RELATIONS
+8:|-------->>=
+7:|------->EXPRESSION
+8:|-------->SUMMAND
+9:|--------->MULTIPLIER
+10:|---------->RELATION_EXPR
+11:|----------->VALUE
+12:|------------>IDENTIFIER
+13:|------------->INTEGER
+14:|-------------->NUM
+15:|--------------->DIGIT
+16:|---------------->NOT_NULL_DIGIT
+17:|----------------->5
+5:|----->:
+5:|----->{
+5:|----->INTERNAL_OPERATOR
+6:|------>PROGRAMM
+7:|------->COMPOUND_OPERATOR
+8:|-------->VARIABLE_DECLARATION
+9:|--------->VARIABLE
+10:|---------->LETTER
+11:|----------->a
+9:|--------->ASSIGNMENT_RELATION
+10:|---------->=
+9:|--------->VALUE
+10:|---------->EXPRESSION
+11:|----------->EXPRESSION
+12:|------------>SUMMAND
+13:|------------->MULTIPLIER
+14:|-------------->RELATION_EXPR
+15:|--------------->VALUE
+16:|---------------->IDENTIFIER
+17:|----------------->VARIABLE
+18:|------------------>LETTER
+19:|------------------->a
+11:|----------->ADDICTIVE_OPERATION
+12:|------------>-
+11:|----------->EXPRESSION
+12:|------------>SUMMAND
+13:|------------->MULTIPLIER
+14:|-------------->RELATION_EXPR
+15:|--------------->VALUE
+16:|---------------->IDENTIFIER
+17:|----------------->INTEGER
+18:|------------------>NUM
+19:|------------------->DIGIT
+20:|-------------------->NOT_NULL_DIGIT
+21:|--------------------->1
+5:|----->}

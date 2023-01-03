@@ -17,8 +17,8 @@ class SyntaxAnalizer:
     def scan(self, col, state, token):
         if token != col.token:
             return
-        if state.name == self.grammatic.GAMMA_RULE:
-            print("Gamma")
+        if state.name == self.grammatic.GRAMMA_RULE:
+            print("Gramma")
         col.add(State(state.name, state.production,
                 state.dot_index + 1, state.start_column))
 
@@ -35,7 +35,7 @@ class SyntaxAnalizer:
 
     def earley(self, rule, text):
         table = [Column(i, tok) for i, tok in enumerate([None] + text.split())]
-        table[0].add(State(self.grammatic.GAMMA_RULE,
+        table[0].add(State(self.grammatic.GRAMMA_RULE,
                      SyntaxUnit(rule), 0, table[0]))
 
         for i, col in enumerate(table):
@@ -50,7 +50,7 @@ class SyntaxAnalizer:
                     elif i + 1 < len(table):
                         self.scan(table[i + 1], state, term)
         for st in table[-1]:
-            if st.name == self.grammatic.GAMMA_RULE and st.completed():
+            if st.name == self.grammatic.GRAMMA_RULE and st.completed():
                 return table
         else:
             raise ValueError(
@@ -60,7 +60,7 @@ class SyntaxAnalizer:
     def right_parsing(self, table):
         state = None
         for st in table[-1]:
-            if st.name == self.grammatic.GAMMA_RULE and st.completed():
+            if st.name == self.grammatic.GRAMMA_RULE and st.completed():
                 state = st
         return self.sub_parsing([], table, state, state.end_column.index)
 

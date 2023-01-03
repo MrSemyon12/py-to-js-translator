@@ -1,7 +1,5 @@
 let a;
-a = 5
-while (True) { 
-		while (False) { 
-				console.log(a)
-	}
+a = 7
+while (a>=5) { 
+		a = a-1
 }

@@ -38,7 +38,7 @@ def writeSyntaxTree(tree, path=""):
             else:
                 l = len(ptr.prev.left)
         file.write(str(level) + ':' + '|' + level *
-                   ' ' + '├-' + str(ptr.left) + "\n")
+                   '-' + '>' + str(ptr.left) + "\n")
         if ptr.childs:
             for i in ptr.childs:
                 search(i, level + 1, file)
@@ -59,7 +59,7 @@ def writeSyntaxTree(tree, path=""):
 def writeOperationTree(tree, path=""):
     def search(ptr, level, file):
         file.write(str(level) + ':' + '|' + level *
-                   '+' + '├-' + str(ptr) + "\n")
+                   '-' + '>' + str(ptr) + "\n")
         if ptr.childs:
             for i in ptr.childs:
                 search(i, level + 1, file)
