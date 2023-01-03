@@ -1,5 +1,2 @@
-let z;
-z = True;
-if (z) { 
-		console.log(z);
-}
+let a;
+a = 7;

@@ -1,3 +1,1 @@
-z = True
-if z:
-    print(z)
+a = 7;
