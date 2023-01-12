@@ -1,11 +1,9 @@
 from flask import Flask, render_template, request, flash
-from translator.main import test
-from os import path
+import lexer
+import syntaxer
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sadawedij3u47r3476666%$^&788782390(())*^$@@@fsfd'
-
-basedir = path.abspath(path.dirname(__file__))
 
 
 @app.route('/', methods=['GET'])
@@ -18,19 +16,14 @@ def index():
     if not input:
         return render_template('index.html', input='', output=output, operationTree=operationTree, syntaxTree=syntaxTree)
 
-    with open(path.join(basedir, 'translator/input.txt'), 'w') as file:
-        file.write(input)
-
     try:
-        test(path.join(basedir, 'translator/'))
-        with open(path.join(basedir, 'translator/output.txt'), 'r') as file:
-            output = file.read()
-        with open(path.join(basedir, 'translator/outputOperationTree.txt'), 'r') as file:
-            operationTree = file.read()
-        with open(path.join(basedir, 'translator/outputSyntaxTree.txt'), 'r') as file:
-            syntaxTree = file.read()
+        tokens = list(lexer.tokenize(input))
+        analyzer = syntaxer.SyntaxAnalyser(tokens)
+        tree = analyzer.parse()
+        syntaxTree = analyzer.getTree(tree)
+        output = 'aaa'
     except Exception as err:
-        flash(f"{err}", category='error')
+        flash(f'{type(err)}: {err}', category='error')
 
     return render_template('index.html', input=input, output=output, operationTree=operationTree, syntaxTree=syntaxTree)
 

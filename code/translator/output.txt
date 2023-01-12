@@ -1,5 +1,0 @@
-let a;
-a = 6;
-while (True && False) { 
-		a = a - 7;
-}

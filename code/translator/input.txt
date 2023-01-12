@@ -1,3 +1,0 @@
-a=6
-while True and False:
-    a = a - 7
