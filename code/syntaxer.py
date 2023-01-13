@@ -22,16 +22,13 @@ class SyntaxAnalyser:
             raise RuntimeError(f'unexpected token on position {self.pos}')
         return token
 
-    def parseVariableOrNumber(self) -> ExpressionNode:
-        number = self.match('NUMBER')
-        if number:
-            return NumberNode(number)
-        variable = self.match('VARIABLE')
-        if variable:
-            return VariableNode(variable)
+    def parseValue(self) -> ExpressionNode:
+        value = self.match('NUMBER', 'VARIABLE', 'BOOL', 'STRING')
+        if value:
+            return ValueNode(value)
         raise RuntimeError(f'unexpected token on position {self.pos}')
 
-    def parseFunc(self):
+    def parseFunc(self) -> ExpressionNode:
         function = self.match('FUNC')
         if function and self.match('LPAR'):
             operand = self.parseFormula()
@@ -39,14 +36,25 @@ class SyntaxAnalyser:
             return UnarOperatorNode(function, operand)
         raise RuntimeError(f'unexpected token on position {self.pos}')
 
-    def parseLog(self):
+    def parseLog(self) -> ExpressionNode:
         operator = self.match('LOG')
         if operator:
             return UnarOperatorNode(operator, self.parseFormula())
         raise RuntimeError(f'unexpected token on position {self.pos}')
 
-    def parseBlock(self):
-        pass
+    def parseBlock(self) -> ExpressionNode:
+        block = BlockNode(self.match('BLOCK'), self.parseFormula())
+        self.require('COLON')
+        self.require('NEWLINE')
+        self.level += 1
+        while self.match('TAB'):
+            expression = self.parseExpression()
+            self.require('NEWLINE')
+            block.addNode(expression)
+
+        self.level -= 1
+        self.pos -= 1
+        return block
 
     def parseParenthesis(self) -> ExpressionNode:
         if self.match('FUNC'):
@@ -58,7 +66,7 @@ class SyntaxAnalyser:
             self.require('RPAR')
             return formulaNode
 
-        return self.parseVariableOrNumber()
+        return self.parseValue()
 
     def parseFormula(self) -> ExpressionNode:
         leftNode = self.parseParenthesis()
@@ -72,7 +80,7 @@ class SyntaxAnalyser:
     def parseExpression(self) -> ExpressionNode:
         if self.match('VARIABLE'):
             self.pos -= 1
-            variableNode = self.parseVariableOrNumber()
+            variableNode = self.parseValue()
             assignOperator = self.match('ASSIGN')
             if assignOperator:
                 formulaNode = self.parseFormula()
@@ -89,29 +97,30 @@ class SyntaxAnalyser:
             self.pos -= 1
             return self.parseFunc()
 
-        # elif match('BLOCK'):
-        #     return parseBlock()
+        elif self.match('BLOCK'):
+            self.pos -= 1
+            return self.parseBlock()
 
-        # elif match('NEWLINE'):
-        #     pass
+        elif self.level >= 2:
+            for _ in range(self.level - 1):
+                self.require('TAB')
+            return self.parseExpression()
 
     def parse(self) -> StatementNode:
         root = StatementNode()
 
         while self.pos < len(self.tokens):
-            codeStringNode = self.parseExpression()
+            expression = self.parseExpression()
             self.require('NEWLINE')
-            root.addNode(codeStringNode)
+            root.addNode(expression)
 
         return root
 
     def getNode(self, node: ExpressionNode) -> str:
         nodeType = type(node)
 
-        if nodeType == VariableNode:
-            return '-' * self.level + f'{node.variable.type} {node.variable.value}\n'
-        elif nodeType == NumberNode:
-            return '-' * self.level + f'{node.number.type} {node.number.value}\n'
+        if nodeType == ValueNode:
+            return '-' * self.level + f'{node.value.type} {node.value.value}\n'
         elif nodeType == BinOperatorNode:
             res = '-' * self.level + \
                 f'{node.operator.type} {node.operator.value}\n'
@@ -124,6 +133,19 @@ class SyntaxAnalyser:
                 f'{node.operator.type} {node.operator.value}\n'
             self.level += 1
             res += f'{self.getNode(node.operand)}'
+            self.level -= 1
+            return res
+        elif nodeType == BlockNode:
+            res = '-' * self.level + \
+                f'{node.operator.type} {node.operator.value}\n'
+            res += '-' * self.level + f'STATE\n'
+            self.level += 1
+            res += f'{self.getNode(node.statement)}'
+            self.level -= 1
+            res += '-' * self.level + f'BODY\n'
+            self.level += 1
+            for line in node.body:
+                res += f'{self.getNode(line)}'
             self.level -= 1
             return res
 

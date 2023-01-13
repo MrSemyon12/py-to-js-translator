@@ -15,9 +15,11 @@ TOKEN_SPECIFICATION = [
     ('LOG',         r'print'),
     ('OPERATOR',    r'[+\-*/]|==|!=|<=|>=|<|>|and|or|not'),
     ('BLOCK',       r'if|else|while'),
+    ('BOOL',        r'True|False'),
+    ('STRING',      r'\"[^"\']*\"|\'[^"\']*\''),
     ('VARIABLE',    r'[A-Za-z0-9_]+'),
     ('ASSIGN',      r'='),
-    ('SEPARATOR',   r':'),
+    ('COLON',       r':'),
     ('NEWLINE',     r'\n'),
     ('TAB',         r'    '),
     ('SKIP',        r'[ \r]+'),
@@ -35,9 +37,7 @@ def tokenize(code: str):
         kind = mo.lastgroup
         value = mo.group()
         column = mo.start() - line_start
-        if kind == 'NUMBER':
-            value = float(value) if '.' in value else int(value)
-        elif kind == 'NEWLINE':
+        if kind == 'NEWLINE':
             line_start = mo.end()
             line_num += 1
             value = '\n'
@@ -45,4 +45,4 @@ def tokenize(code: str):
             continue
         elif kind == 'MISMATCH':
             raise RuntimeError(f'unexpected {value!r} on line {line_num}')
-        yield Token(kind, value, line_num, column)
+        yield Token(kind, value.replace('\'', '\"'), line_num, column)

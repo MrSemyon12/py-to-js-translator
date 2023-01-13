@@ -20,14 +20,12 @@
             <textarea class="form-control fs-2 px-5 py-3" rows="8"
                 placeholder="Output JavaScript code">{{ output }}</textarea>
         </div>
+    </div>
+    <div class="row">
         {% if output %}
         <div class="col">
             <h1 class="d-flex justify-content-center">SyntaxTree</h1>
-            <textarea class="form-control fs-4 px-5 py-3" rows="8">{{ syntaxTree }}</textarea>
-        </div>
-        <div class="col">
-            <h1 class="d-flex justify-content-center">OperationTree</h1>
-            <textarea class="form-control fs-4 px-5 py-3" rows="8">{{ operationTree }}</textarea>
+            <textarea class="form-control fs-4 px-5 py-3 mb-5" rows="12">{{ syntaxTree }}</textarea>
         </div>
         {% endif %}
     </div>
