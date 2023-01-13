@@ -1,14 +1,12 @@
 import lexer
 import syntaxer
 
-code = '''a = (321.7 + value) * (7 - (8 / 9))
-
-
-b = a / 7
-'''
+code = '''abs(abs(4) * math.sin(5 + 8))'''
 
 
 tokens = list(lexer.tokenize(code))
+# for token in tokens:
+#     print(token)
 analyzer = syntaxer.SyntaxAnalyser(tokens)
 syntaxTree = analyzer.parse()
 

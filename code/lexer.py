@@ -11,7 +11,8 @@ class Token(NamedTuple):
 
 TOKEN_SPECIFICATION = [
     ('NUMBER',      r'\d+(\.\d*)?'),
-    ('FUNC',        r'print|math.sin|math.cos|math.tan|math.sqrt|abs'),
+    ('FUNC',        r'math.sin|math.cos|math.tan|math.sqrt|abs'),
+    ('LOG',         r'print'),
     ('OPERATOR',    r'[+\-*/]|==|!=|<=|>=|<|>|and|or|not'),
     ('BLOCK',       r'if|else|while'),
     ('VARIABLE',    r'[A-Za-z0-9_]+'),

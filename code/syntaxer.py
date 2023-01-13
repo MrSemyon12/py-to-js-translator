@@ -33,18 +33,31 @@ class SyntaxAnalyser:
 
     def parseFunc(self):
         function = self.match('FUNC')
-        if function:
-            return UnarOperatorNode(function, self.parseFormula())
+        if function and self.match('LPAR'):
+            operand = self.parseFormula()
+            self.require('RPAR')
+            return UnarOperatorNode(function, operand)
+        raise RuntimeError(f'unexpected token on position {self.pos}')
+
+    def parseLog(self):
+        operator = self.match('LOG')
+        if operator:
+            return UnarOperatorNode(operator, self.parseFormula())
         raise RuntimeError(f'unexpected token on position {self.pos}')
 
     def parseBlock(self):
         pass
 
     def parseParenthesis(self) -> ExpressionNode:
+        if self.match('FUNC'):
+            self.pos -= 1
+            return self.parseFunc()
+
         if self.match('LPAR'):
             formulaNode = self.parseFormula()
             self.require('RPAR')
             return formulaNode
+
         return self.parseVariableOrNumber()
 
     def parseFormula(self) -> ExpressionNode:
@@ -67,6 +80,10 @@ class SyntaxAnalyser:
                     assignOperator, variableNode, formulaNode)
                 return binaryNode
             raise RuntimeError(f'unexpected token on position {self.pos}')
+
+        elif self.match('LOG'):
+            self.pos -= 1
+            return self.parseLog()
 
         elif self.match('FUNC'):
             self.pos -= 1
@@ -100,6 +117,13 @@ class SyntaxAnalyser:
                 f'{node.operator.type} {node.operator.value}\n'
             self.level += 1
             res += f'{self.getNode(node.leftNode)}{self.getNode(node.rightNode)}'
+            self.level -= 1
+            return res
+        elif nodeType == UnarOperatorNode:
+            res = '-' * self.level + \
+                f'{node.operator.type} {node.operator.value}\n'
+            self.level += 1
+            res += f'{self.getNode(node.operand)}'
             self.level -= 1
             return res
 
