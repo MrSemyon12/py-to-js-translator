@@ -10,7 +10,7 @@ class Token(NamedTuple):
 
 
 TOKEN_SPECIFICATION = [
-    ('NUMBER',      r'\d+(\.\d*)?'),
+    ('NUMBER',      r'-?\d+(\.\d*)?'),
     ('FUNC',        r'math.sin|math.cos|math.tan|math.sqrt|abs'),
     ('LOG',         r'print'),
     ('OPERATOR',    r'[+\-*/]|==|!=|<=|>=|<|>|and|or|not'),
@@ -44,5 +44,5 @@ def tokenize(code: str):
         elif kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':
-            raise RuntimeError(f'unexpected {value!r} on line {line_num}')
+            raise SyntaxError(f'unexpected {value!r} on line {line_num}')
         yield Token(kind, value.replace('\'', '\"'), line_num, column)

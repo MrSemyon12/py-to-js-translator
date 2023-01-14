@@ -2,7 +2,7 @@ from lexer import Token
 from nodes import *
 
 
-class SyntaxAnalyser:
+class SyntaxAnalyzer:
     def __init__(self, tokens: list) -> None:
         self.tokens = tokens
         self.pos = 0
@@ -19,38 +19,46 @@ class SyntaxAnalyser:
     def require(self, *expected) -> Token:
         token = self.match(*expected)
         if not token:
-            raise RuntimeError(f'unexpected token on position {self.pos}')
+            raise SyntaxError(f'expected {expected[0]} on position {self.pos}')
         return token
 
     def parseValue(self) -> ExpressionNode:
-        value = self.match('NUMBER', 'VARIABLE', 'BOOL', 'STRING')
-        if value:
-            return ValueNode(value)
-        raise RuntimeError(f'unexpected token on position {self.pos}')
+        return ValueNode(self.require('NUMBER', 'VARIABLE', 'BOOL', 'STRING'))
 
     def parseFunc(self) -> ExpressionNode:
         function = self.match('FUNC')
-        if function and self.match('LPAR'):
+        if function:
+            self.require('LPAR')
             operand = self.parseFormula()
             self.require('RPAR')
             return UnarOperatorNode(function, operand)
-        raise RuntimeError(f'unexpected token on position {self.pos}')
+        raise SyntaxError(f'expected \'FUNC\' on position {self.pos}')
 
     def parseLog(self) -> ExpressionNode:
-        operator = self.match('LOG')
-        if operator:
-            return UnarOperatorNode(operator, self.parseFormula())
-        raise RuntimeError(f'unexpected token on position {self.pos}')
+        return UnarOperatorNode(self.require('LOG'), self.parseFormula())
+
+    def parseTab(self) -> bool:
+        cnt = 0
+        for _ in range(self.level):
+            if not self.match('TAB'):
+                self.pos -= cnt
+                return False
+            cnt += 1
+        return True
 
     def parseBlock(self) -> ExpressionNode:
-        block = BlockNode(self.match('BLOCK'), self.parseFormula())
+        blockToken = self.match('BLOCK')
+        if blockToken.value == 'else':
+            block = ElseNode(blockToken)
+        else:
+            block = BlockNode(blockToken, self.parseFormula())
         self.require('COLON')
         self.require('NEWLINE')
         self.level += 1
-        while self.match('TAB'):
+        while self.parseTab():
             expression = self.parseExpression()
-            self.require('NEWLINE')
             block.addNode(expression)
+            self.require('NEWLINE')
 
         self.level -= 1
         self.pos -= 1
@@ -87,7 +95,9 @@ class SyntaxAnalyser:
                 binaryNode = BinOperatorNode(
                     assignOperator, variableNode, formulaNode)
                 return binaryNode
-            raise RuntimeError(f'unexpected token on position {self.pos}')
+            else:
+                self.pos -= 1
+                return self.parseFormula()
 
         elif self.match('LOG'):
             self.pos -= 1
@@ -101,10 +111,9 @@ class SyntaxAnalyser:
             self.pos -= 1
             return self.parseBlock()
 
-        elif self.level >= 2:
-            for _ in range(self.level - 1):
-                self.require('TAB')
-            return self.parseExpression()
+        elif self.match('NUMBER', 'VARIABLE', 'BOOL', 'STRING'):
+            self.pos -= 1
+            return self.parseFormula()
 
     def parse(self) -> StatementNode:
         root = StatementNode()
@@ -142,6 +151,15 @@ class SyntaxAnalyser:
             self.level += 1
             res += f'{self.getNode(node.statement)}'
             self.level -= 1
+            res += '-' * self.level + f'BODY\n'
+            self.level += 1
+            for line in node.body:
+                res += f'{self.getNode(line)}'
+            self.level -= 1
+            return res
+        elif nodeType == ElseNode:
+            res = '-' * self.level + \
+                f'{node.operator.type} {node.operator.value}\n'
             res += '-' * self.level + f'BODY\n'
             self.level += 1
             for line in node.body:

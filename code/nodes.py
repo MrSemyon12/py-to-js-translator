@@ -44,3 +44,13 @@ class BlockNode(ExpressionNode):
 
     def addNode(self, node: ExpressionNode):
         self.body.append(node)
+
+
+class ElseNode(ExpressionNode):
+    def __init__(self, operator: Token) -> None:
+        super().__init__()
+        self.operator: Token = operator
+        self.body = []
+
+    def addNode(self, node: ExpressionNode):
+        self.body.append(node)

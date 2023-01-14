@@ -18,7 +18,7 @@ def index():
 
     try:
         tokens = list(lexer.tokenize(input))
-        analyzer = syntaxer.SyntaxAnalyser(tokens)
+        analyzer = syntaxer.SyntaxAnalyzer(tokens)
         tree = analyzer.parse()
         syntaxTree = analyzer.getTree(tree)
         output = 'aaa'
