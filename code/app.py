@@ -11,11 +11,9 @@ app.config['SECRET_KEY'] = 'smA8691BVVd2bq9iSzeAm2yW1GJJD0dE'
 @app.route('/', methods=['GET'])
 def index():
     input = request.args.get('input')
-    output = ''
-    textTree = ''
 
     if not input:
-        return render_template('index.html', input='', output=output, syntaxTree=textTree)
+        return render_template('index.html', input='', output='', syntaxTree='', tokens='')
 
     try:
         tokens = list(lexer.tokenize(input))
@@ -27,7 +25,7 @@ def index():
     except Exception as err:
         flash(f'{type(err)}: {err}', category='error')
 
-    return render_template('index.html', input=input, output=output, syntaxTree=textTree)
+    return render_template('index.html', input=input, output=output, syntaxTree=textTree, tokens='\n'.join(map(str, tokens)))
 
 
 if __name__ == '__main__':

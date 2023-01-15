@@ -15,7 +15,7 @@ toJS = {
     'or': '||',
 }
 
-MARGIN = '    '
+MARGIN = '\t'
 
 
 class CodeGenerator:

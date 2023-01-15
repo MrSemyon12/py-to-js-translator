@@ -3,8 +3,7 @@ import syntaxer
 import semanalyzer
 import codegen
 
-code = '''
-a = 5 + math.sin(5)
+code = '''a = 5 + math.sin(5)
 if a and abs(5):
     print(5)
 else:
@@ -15,13 +14,11 @@ else:
             print(1)
     a = a - 5 + 6 / (4 - math.sqrt(7 + 0))
     b = a
-print(6)
-'''
+print(6)'''
 
 
 tokens = list(lexer.tokenize(code))
-for token in tokens:
-    print(token)
+print('\n'.join(map(str, tokens)))
 
 analyzer = syntaxer.SyntaxAnalyzer(tokens)
 syntaxTree = analyzer.parse()
