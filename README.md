@@ -1,6 +1,23 @@
 # from Python to JS translator
 
-## <a>Go checkout: http://mrsemyon12.pythonanywhere.com
+Transpiler from Python to JavaScript. Includes transpiler module which performs
+all logic and a simple web interface to interact with.
+
+## <a>Go checkout http://mrsemyon12.pythonanywhere.com
+
+To run the project locally use following commands `python3.10 required`:
+
+```bash
+git clone https://github.com/MrSemyon12/py-to-js-translator.git
+cd py-to-js-translator
+python -m venv venv
+venv\Scripts\activate.bat
+pip install -r requirements.txt
+python code\app.py
+```
+
+After that you can check [localhost:5000](http://localhost:5000)
+
 
 ## Available constructions
 * Binary operators `= / + * - and or == != < > <= >=`
