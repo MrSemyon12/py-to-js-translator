@@ -125,7 +125,7 @@ class SyntaxAnalyzer:
 
         return root
 
-    def getNode(self, node: ExpressionNode) -> str:
+    def getTextNode(self, node: ExpressionNode) -> str:
         nodeType = type(node)
 
         if nodeType == ValueNode:
@@ -134,14 +134,14 @@ class SyntaxAnalyzer:
             res = '-' * self.level + \
                 f'{node.operator.type} {node.operator.value}\n'
             self.level += 1
-            res += f'{self.getNode(node.leftNode)}{self.getNode(node.rightNode)}'
+            res += f'{self.getTextNode(node.leftNode)}{self.getTextNode(node.rightNode)}'
             self.level -= 1
             return res
         elif nodeType == UnarOperatorNode:
             res = '-' * self.level + \
                 f'{node.operator.type} {node.operator.value}\n'
             self.level += 1
-            res += f'{self.getNode(node.operand)}'
+            res += f'{self.getTextNode(node.operand)}'
             self.level -= 1
             return res
         elif nodeType == BlockNode:
@@ -149,12 +149,12 @@ class SyntaxAnalyzer:
                 f'{node.operator.type} {node.operator.value}\n'
             res += '-' * self.level + f'STATE\n'
             self.level += 1
-            res += f'{self.getNode(node.statement)}'
+            res += f'{self.getTextNode(node.statement)}'
             self.level -= 1
             res += '-' * self.level + f'BODY\n'
             self.level += 1
             for line in node.body:
-                res += f'{self.getNode(line)}'
+                res += f'{self.getTextNode(line)}'
             self.level -= 1
             return res
         elif nodeType == ElseNode:
@@ -163,15 +163,15 @@ class SyntaxAnalyzer:
             res += '-' * self.level + f'BODY\n'
             self.level += 1
             for line in node.body:
-                res += f'{self.getNode(line)}'
+                res += f'{self.getTextNode(line)}'
             self.level -= 1
             return res
 
-    def getTree(self, root: StatementNode) -> str:
+    def getTextTree(self, root: StatementNode) -> str:
         textTree = ''
 
         for line in root.codeStrings:
             if line:
-                textTree += self.getNode(line)
+                textTree += self.getTextNode(line)
 
         return textTree

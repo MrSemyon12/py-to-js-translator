@@ -1,6 +1,7 @@
 import lexer
 import syntaxer
 import semanalyzer
+import codegen
 
 code = '''
 while 4 + 4:
@@ -12,11 +13,16 @@ while 4 + 4:
 '''
 
 
-tokens = list(lexer.tokenize(code))
+tokens = list(lexer.tokenize(input))
 for token in tokens:
     print(token)
+
 analyzer = syntaxer.SyntaxAnalyzer(tokens)
 syntaxTree = analyzer.parse()
+textTree = analyzer.getTextTree(syntaxTree)
+print(textTree)
 
-print(analyzer.getTree(syntaxTree))
 semanalyzer.SemanticAnalyzer().check(syntaxTree)
+
+output = codegen.CodeGenerator().genJavaScript(syntaxTree)
+print(output)
