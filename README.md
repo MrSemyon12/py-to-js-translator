@@ -10,7 +10,7 @@ example = True and -5 or 0 and 8.42 > 9
 ```
 * Math functions `sin cos tan sqrt abs`
 ```python
-example = math.sin(-0.005 + math.abs(0.1 / -66))
+example = math.sin(-0.005 + abs(0.1 / -66))
 ```
 * Strings
 ```python

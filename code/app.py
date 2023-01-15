@@ -11,6 +11,9 @@ app.config['SECRET_KEY'] = 'smA8691BVVd2bq9iSzeAm2yW1GJJD0dE'
 @app.route('/', methods=['GET'])
 def index():
     input = request.args.get('input')
+    output = ''
+    textTree = ''
+    tokens = ''
 
     if not input:
         return render_template('index.html', input='', output='', syntaxTree='', tokens='')
