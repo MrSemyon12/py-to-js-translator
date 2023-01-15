@@ -8,7 +8,7 @@ class SyntaxAnalyzer:
         self.pos = 0
         self.level = 0
 
-    def match(self, *expected) -> Token | None:
+    def match(self, *expected) -> Token or None:
         if self.pos < len(self.tokens):
             currentToken = self.tokens[self.pos]
             if currentToken.type in expected:

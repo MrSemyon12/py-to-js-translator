@@ -5,7 +5,7 @@ all logic and a simple web interface to interact with.
 
 ## <a>Go checkout http://mrsemyon12.pythonanywhere.com
 
-To run the project locally use following commands `python3.10 required`:
+To run the project locally use following commands `python3.9 required`:
 
 ```bash
 git clone https://github.com/MrSemyon12/py-to-js-translator.git
