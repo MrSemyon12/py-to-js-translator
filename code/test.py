@@ -4,16 +4,22 @@ import semanalyzer
 import codegen
 
 code = '''
-while 4 + 4:
-    if True:
-        a = 0
-    else:
-        while True:
-            a = 0
+a = 5 + math.sin(5)
+if a and abs(5):
+    print(5)
+else:
+    while True:
+        if 4 or 0 and 5:
+            a = a- 1
+        else:
+            print(1)
+    a = a - 5 + 6 / (4 - math.sqrt(7 + 0))
+    b = a
+print(6)
 '''
 
 
-tokens = list(lexer.tokenize(input))
+tokens = list(lexer.tokenize(code))
 for token in tokens:
     print(token)
 

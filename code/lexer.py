@@ -17,6 +17,7 @@ TOKEN_SPECIFICATION = [
     ('BLOCK',       r'if|else|while'),
     ('BOOL',        r'True|False'),
     ('STRING',      r'\"[^"\']*\"|\'[^"\']*\''),
+    ('CODENAME',    r'let|Math|console|true|false'),
     ('VARIABLE',    r'[A-Za-z0-9_]+'),
     ('ASSIGN',      r'='),
     ('COLON',       r':'),
@@ -43,6 +44,8 @@ def tokenize(code: str):
             value = '\n'
         elif kind == 'SKIP':
             continue
+        elif kind == 'CODENAME':
+            raise SyntaxError(f'using codename {value!r} as a variable')
         elif kind == 'MISMATCH':
             raise SyntaxError(f'unexpected {value!r} on line {line_num}')
         yield Token(kind, value.replace('\'', '\"'), line_num, column)

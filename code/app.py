@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash
 import lexer
 import syntaxer
 import semanalyzer
+import codegen
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'smA8691BVVd2bq9iSzeAm2yW1GJJD0dE'
@@ -22,7 +23,7 @@ def index():
         syntaxTree = analyzer.parse()
         textTree = analyzer.getTextTree(syntaxTree)
         semanalyzer.SemanticAnalyzer().check(syntaxTree)
-        output = 'aaa'
+        output = codegen.CodeGenerator().genJavaScript(syntaxTree)
     except Exception as err:
         flash(f'{type(err)}: {err}', category='error')
 
