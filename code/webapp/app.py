@@ -1,4 +1,9 @@
 from flask import Flask, render_template, request, flash
+import sys
+import os
+
+sys.path.append(os.path.join(os.getcwd(), 'code/translator'))
+
 import lexer
 import syntaxer
 import semanalyzer
@@ -19,7 +24,7 @@ def index():
         return render_template('index.html', input='', output='', syntaxTree='', tokens='')
 
     try:
-        tokens = list(lexer.tokenize(input))
+        tokens = lexer.tokenize(input)
         analyzer = syntaxer.SyntaxAnalyzer(tokens)
         syntaxTree = analyzer.parse()
         textTree = analyzer.getTextTree(syntaxTree)

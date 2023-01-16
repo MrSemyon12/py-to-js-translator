@@ -31,6 +31,7 @@ TOKEN_SPECIFICATION = [
 
 
 def tokenize(code: str):
+    tokens = []
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in TOKEN_SPECIFICATION)
     line_num = 1
     line_start = 0
@@ -45,7 +46,8 @@ def tokenize(code: str):
         elif kind == 'SKIP':
             continue
         elif kind == 'CODENAME':
-            raise SyntaxError(f'using codename {value!r} as a variable')
+            raise NameError(f'using codename {value!r} as a variable')
         elif kind == 'MISMATCH':
             raise SyntaxError(f'unexpected {value!r} on line {line_num}')
-        yield Token(kind, value.replace('\'', '\"'), line_num, column)
+        tokens.append(Token(kind, value.replace('\'', '\"'), line_num, column))
+    return tokens

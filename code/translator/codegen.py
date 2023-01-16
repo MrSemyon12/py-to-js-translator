@@ -10,7 +10,6 @@ toJS = {
     'math.tan': 'Math.tan',
     'math.sqrt': 'Math.sqrt',
     'abs': 'Math.abs',
-    'math.sin': 'Math.sin',
     'and': '&&',
     'or': '||',
 }

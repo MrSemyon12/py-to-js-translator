@@ -17,7 +17,7 @@ else:
 print(6)'''
 
 
-tokens = list(lexer.tokenize(code))
+tokens = lexer.tokenize(code)
 print('\n'.join(map(str, tokens)))
 
 analyzer = syntaxer.SyntaxAnalyzer(tokens)
