@@ -11,9 +11,9 @@ To run the project locally use following commands `python3.9 required`:
 git clone https://github.com/MrSemyon12/py-to-js-translator.git
 cd py-to-js-translator
 python -m venv venv
-venv\Scripts\activate.bat
+.\venv\Scripts\activate.bat
 pip install -r requirements.txt
-python code\app.py
+python .\code\webapp\app.py
 ```
 
 After that you can check [localhost:5000](http://localhost:5000)
