@@ -2,15 +2,11 @@ from flask import Flask, render_template, request, flash
 import sys
 import os
 
-sys.path.append(os.path.join(os.getcwd(), 'code/translator'))
-
-import lexer
-import syntaxer
-import semanalyzer
-import codegen
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'smA8691BVVd2bq9iSzeAm2yW1GJJD0dE'
+
+sys.path.append(os.path.join(os.getcwd(), 'code/translator'))
 
 
 @app.route('/', methods=['GET'])
@@ -24,6 +20,10 @@ def index():
         return render_template('index.html', input='', output='', syntaxTree='', tokens='')
 
     try:
+        import codegen
+        import semanalyzer
+        import lexer
+        import syntaxer
         tokens = lexer.tokenize(input)
         analyzer = syntaxer.SyntaxAnalyzer(tokens)
         syntaxTree = analyzer.parse()
